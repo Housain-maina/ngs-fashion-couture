@@ -15,12 +15,15 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Entypo from "@expo/vector-icons/Entypo"
 import { Tabs } from "expo-router";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
+import { Slot, Stack } from "expo-router"
+import auth from '@react-native-firebase/auth';
+
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
 }) {
-  return <FontAwesome size={25} style={{ marginBottom: -3 }} {...props} />;
+  return <FontAwesome size={22} style={{ marginBottom: -3 }} {...props} />;
 }
 
 export {
@@ -67,6 +70,51 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState(null);
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+
+    setUser(user);
+
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  if (initializing) return null;
+
+
+
+  if (!user?.email) {
+    return (
+      <GluestackUIProvider config={config}>
+        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+          <Stack
+            screenOptions={{
+              // Disable the static render of the header on web
+              // to prevent a hydration error in React Navigation v6.
+              headerShown: useClientOnlyValue(false, true),
+            }}
+          >
+            <Stack.Screen
+              name="login"
+              options={{
+                title: "Log In",
+                headerShown: false,
+
+              }}
+
+            />
+          </Stack>
+        </ThemeProvider>
+      </GluestackUIProvider>
+    )
+  }
 
   return (
     <GluestackUIProvider config={config}>
@@ -76,37 +124,56 @@ function RootLayoutNav() {
             // Disable the static render of the header on web
             // to prevent a hydration error in React Navigation v6.
             headerShown: useClientOnlyValue(false, true),
+
+
           }}
         >
           <Tabs.Screen
             name="index"
             options={{
-              title: "Home",
-              tabBarIcon: ({ color }) => <TabBarIcon name="home" size={25} color={color} />,
+              title: "NGS Fashion Couture",
+              tabBarLabel: "Home",
+
+              tabBarIcon: ({ color }) => <Entypo name="home" size={22} color={color} />,
             }}
+
           />
 
           <Tabs.Screen
             name="measurements"
             options={{
               title: "Measurements",
-              tabBarIcon: ({ color }) => <Entypo name="ruler" size={25} color={color} />,
+
+              tabBarIcon: ({ color }) => <Entypo name="ruler" size={22} color={color} />,
             }}
           />
+
           <Tabs.Screen
             name="customers"
             options={{
               title: "Customers",
-              tabBarIcon: ({ color }) => <TabBarIcon name="users" size={25} color={color} />,
+              tabBarIcon: ({ color }) => <TabBarIcon name="users" size={22} color={color} />,
             }}
           />
           <Tabs.Screen
             name="works"
             options={{
               title: "Works",
-              tabBarIcon: ({ color }) => <FontAwesome5 name="tshirt" size={25} color={color} />,
+
+              tabBarIcon: ({ color }) => <FontAwesome5 name="tshirt" size={22} color={color} />,
             }}
           />
+          <Tabs.Screen
+            name="login"
+            options={{
+              headerShown: false,
+              title: "Log In",
+              tabBarShowLabel: false,
+              tabBarIcon: ({ color }) => <FontAwesome5 name="tshirt" size={22} color={color} />,
+              href: null
+            }}
+          />
+
         </Tabs>
       </ThemeProvider>
     </GluestackUIProvider>
