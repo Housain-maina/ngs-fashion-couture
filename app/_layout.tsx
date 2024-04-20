@@ -17,7 +17,7 @@ import { Tabs } from "expo-router";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { Slot, Stack } from "expo-router"
 import auth from '@react-native-firebase/auth';
-
+import Toast from "react-native-toast-message";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
@@ -140,6 +140,14 @@ function RootLayoutNav() {
           />
 
           <Tabs.Screen
+            name="works"
+            options={{
+              title: "Works",
+
+              tabBarIcon: ({ color }) => <FontAwesome5 name="tshirt" size={22} color={color} />,
+            }}
+          />
+          <Tabs.Screen
             name="measurements"
             options={{
               title: "Measurements",
@@ -156,14 +164,6 @@ function RootLayoutNav() {
             }}
           />
           <Tabs.Screen
-            name="works"
-            options={{
-              title: "Works",
-
-              tabBarIcon: ({ color }) => <FontAwesome5 name="tshirt" size={22} color={color} />,
-            }}
-          />
-          <Tabs.Screen
             name="login"
             options={{
               headerShown: false,
@@ -174,7 +174,18 @@ function RootLayoutNav() {
             }}
           />
 
+          <Tabs.Screen
+            name="addMeasurement"
+            options={{
+              title: "Add Measurement",
+              tabBarIcon: ({ color }) => <FontAwesome5 name="tshirt" size={22} color={color} />,
+              href: null,
+
+            }}
+          />
+
         </Tabs>
+        <Toast />
       </ThemeProvider>
     </GluestackUIProvider>
   );

@@ -1,28 +1,26 @@
 import React, { useMemo, useState } from 'react'
-import { CustomerType } from '@/types'
 import { Center, Heading, HStack, Input, InputField, Select, SelectItem, View, VStack } from '@gluestack-ui/themed'
 import { Text } from '@gluestack-ui/themed'
 import { ActivityIndicator, Touchable, TouchableOpacity, TouchableOpacityBase } from 'react-native'
-import { Entypo, FontAwesome5, Ionicons } from '@expo/vector-icons'
+import { Entypo, Ionicons } from '@expo/vector-icons'
 import Modal from "react-native-modal";
 import { Button } from '@gluestack-ui/themed'
 import { ButtonText } from '@gluestack-ui/themed'
 import { deleteCustomer, updateCustomer } from '@/utils/helpers'
 import Toast from "react-native-toast-message";
 import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
-import { Link, useRouter } from 'expo-router'
+import { FemaleMeasurementType, MaleMeasurementType } from '@/types'
 
 
 
-const CustomerListItem = ({ data }: { data: CustomerType }) => {
+const MeasurementListItem = ({ data }: { data: MaleMeasurementType | FemaleMeasurementType }) => {
     const [isModalVisible, setModalVisible] = useState(false);
-    // const [selectedCustomer, setSelectedCustomer] = useState<CustomerType | null>(null)
+    // const [selectedCustomer, setSelectedCustomer] = useState<MeasurementType | null>(null)
     const [names, setNames] = useState(data?.names)
     const [gender, setGender] = useState(data?.gender)
     const [phoneNumber, setPhoneNumber] = useState(data?.phoneNumber)
     const [isSaving, setIsSaving] = useState(false)
     const [isDeletingCustomer, setIsDeletingCustomer] = useState(false)
-    const router = useRouter()
 
 
     const handleModalClose = () => {
@@ -113,34 +111,6 @@ const CustomerListItem = ({ data }: { data: CustomerType }) => {
                         </VStack>
 
                         <VStack space="xs" mt={20}>
-                            <HStack space='md'>
-
-                                {/* <Link href={{
-                                    pathname: "/addMeasurement",
-                                    params: { id: 86, other: "anything you want here" },
-
-                                }}> */}
-                                <Button onPress={() => router.navigate({ pathname: "/addMeasurement", params: data })}>
-                                    <ButtonText>
-                                        <FontAwesome5 name="plus" size={20} color="white" /> {" "} <Entypo name="ruler" size={20} color="white" />
-                                    </ButtonText>
-                                </Button>
-                                {/* </Link> */}
-
-                                <Link href={{
-                                    pathname: "/addMeasurement",
-                                    params: { id: 86, other: "anything you want here" },
-
-                                }}>
-                                    <Button>
-                                        <ButtonText>
-                                            <FontAwesome5 name="plus" size={20} color="white" /> {" "} <FontAwesome5 name="tshirt" size={20} color="white" />
-                                        </ButtonText>
-                                    </Button>
-
-                                </Link>
-                            </HStack>
-
                             <Button bgColor="green" onPress={handleCustomerSave}>
                                 {isSaving ? <ActivityIndicator color="white" /> :
                                     <ButtonText>
@@ -155,7 +125,6 @@ const CustomerListItem = ({ data }: { data: CustomerType }) => {
                                     </ButtonText>
                                 }
                             </Button>
-
                         </VStack>
                     </VStack>
                 </View>
@@ -165,4 +134,4 @@ const CustomerListItem = ({ data }: { data: CustomerType }) => {
     )
 }
 
-export default CustomerListItem
+export default MeasurementListItem
