@@ -3,6 +3,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { firebase } from "@react-native-firebase/auth"
 import auth from '@react-native-firebase/auth';
 import { useState } from "react";
+import { Tabs } from "expo-router";
+import { TouchableOpacity } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 
 
 export default function Home() {
@@ -16,11 +19,17 @@ export default function Home() {
   }
   return (
     <SafeAreaView style={{ flex: 1, paddingHorizontal: 15 }}>
+      <Tabs.Screen options={{
+        headerRight: () => <TouchableOpacity onPress={() => auth().signOut()}><AntDesign name="logout" color="red" size={20} /></TouchableOpacity>,
+        headerRightContainerStyle: {
+          paddingRight: 13
+        }
+      }} />
       <ScrollView>
 
 
       </ScrollView>
 
-    </SafeAreaView>
+    </SafeAreaView >
   );
 }

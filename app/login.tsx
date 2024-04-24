@@ -23,7 +23,7 @@ export default function LogIn() {
     await auth()
       .signInWithEmailAndPassword(email.toLowerCase(), password)
       .then((res) => {
-        console.log(res)
+
       })
       .catch(error => {
 

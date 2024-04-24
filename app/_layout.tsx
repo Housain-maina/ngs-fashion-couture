@@ -153,9 +153,18 @@ function RootLayoutNav() {
               title: "Measurements",
 
               tabBarIcon: ({ color }) => <Entypo name="ruler" size={22} color={color} />,
+
+              href: null
             }}
           />
 
+          <Tabs.Screen
+            name="scan"
+            options={{
+              title: "Scan",
+              tabBarIcon: ({ color }) => <TabBarIcon name="camera" size={22} color={color} />,
+            }}
+          />
           <Tabs.Screen
             name="customers"
             options={{
@@ -176,6 +185,15 @@ function RootLayoutNav() {
 
           <Tabs.Screen
             name="addMeasurement"
+            options={{
+              title: "Add Measurement",
+              tabBarIcon: ({ color }) => <FontAwesome5 name="tshirt" size={22} color={color} />,
+              href: null,
+
+            }}
+          />
+          <Tabs.Screen
+            name="addWork"
             options={{
               title: "Add Measurement",
               tabBarIcon: ({ color }) => <FontAwesome5 name="tshirt" size={22} color={color} />,

@@ -57,3 +57,35 @@ export const createMeasurement = async (
     console.error("Error creating measurement:", error);
   }
 };
+
+export const getCustomer = async (customerId: string) => {
+  const customer = await firestore()
+    .collection("customers")
+    .doc(customerId)
+    .get();
+  if (customer) {
+    return customer.data();
+  }
+  return null;
+};
+
+export const getMeasurement = (customerId: string) => {
+  const query = firestore()
+    .collection("measurements")
+    .where("customerId", "==", customerId);
+
+  query
+    .get()
+    .then(querySnapshot => {
+      if (querySnapshot.size > 0) {
+        return querySnapshot.docs[0].data();
+      } else {
+        return null;
+      }
+    })
+    .catch(error => {
+      console.error("Error getting documents:", error);
+    });
+
+  // return data;
+};

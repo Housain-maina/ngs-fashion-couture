@@ -114,31 +114,19 @@ const CustomerListItem = ({ data }: { data: CustomerType }) => {
 
                         <VStack space="xs" mt={20}>
                             <HStack space='md'>
-
-                                {/* <Link href={{
-                                    pathname: "/addMeasurement",
-                                    params: { id: 86, other: "anything you want here" },
-
-                                }}> */}
                                 <Button onPress={() => router.navigate({ pathname: "/addMeasurement", params: data })}>
                                     <ButtonText>
-                                        <FontAwesome5 name="plus" size={20} color="white" /> {" "} <Entypo name="ruler" size={20} color="white" />
+                                        <Entypo name="ruler" size={20} color="white" />
                                     </ButtonText>
                                 </Button>
-                                {/* </Link> */}
 
-                                <Link href={{
-                                    pathname: "/addMeasurement",
-                                    params: { id: 86, other: "anything you want here" },
 
-                                }}>
-                                    <Button>
-                                        <ButtonText>
-                                            <FontAwesome5 name="plus" size={20} color="white" /> {" "} <FontAwesome5 name="tshirt" size={20} color="white" />
-                                        </ButtonText>
-                                    </Button>
+                                <Button onPress={() => router.navigate({ pathname: "/addWork", params: data })}>
+                                    <ButtonText>
+                                        <FontAwesome5 name="tshirt" size={20} color="white" />
+                                    </ButtonText>
+                                </Button>
 
-                                </Link>
                             </HStack>
 
                             <Button bgColor="green" onPress={handleCustomerSave}>
