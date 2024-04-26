@@ -19,27 +19,16 @@ import MeasurementListItem from "@/components/MeasurementListItem";
 
 export default function Measurements() {
 
-  const [data, setData] = useState<MaleMeasurementType[] | FemaleMeasurementType[]>([]);
+  const [data, setData] = useState<MaleMeasurementType[] | FemaleMeasurementType[] | any>([]);
   const collectionName = 'measurements';
 
 
-  const getData = async () => {
-    try {
-      const querySnapshot = await firestore().collection(collectionName).get();
-      const newData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-      // setData(newData);
-      setData(newData.sort((a, b) => (a.names || "").localeCompare(b.names || "")));
-
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   useEffect(() => {
     const unsubscribe = firestore().collection(collectionName).onSnapshot(querySnapshot => {
       const newData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
       // setData(newData);
-      setData(newData.sort((a, b) => (a.names || "").localeCompare(b.names || "")));
+      setData(newData.sort((a: any, b: any) => (a.names || "").localeCompare(b.names || "")));
 
     }, error => {
       console.error(error);
@@ -69,9 +58,6 @@ export default function Measurements() {
 
   return (
     <SafeAreaView style={{ paddingHorizontal: 20, flex: 1 }}>
-      <Input>
-        <InputField placeholder="Search Measurements...." />
-      </Input>
 
       <FlatList
         style={{ marginTop: 25 }}

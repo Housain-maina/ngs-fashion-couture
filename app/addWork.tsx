@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Tabs, useLocalSearchParams } from 'expo-router';
+import { Tabs, useLocalSearchParams, useNavigation } from 'expo-router';
 import { AddIcon, Box, Button, ButtonText, Center, Checkbox, CheckboxLabel, Heading, HStack, Input, InputField, VStack } from '@gluestack-ui/themed';
 import { Text } from '@gluestack-ui/themed';
-import { ActivityIndicator, ScrollView } from 'react-native';
+import { ActivityIndicator, ScrollView, TouchableOpacity } from 'react-native';
 import { getMeasurement } from '@/utils/helpers';
 import { CustomerType, FemaleMeasurementCreateType, FemaleMeasurementType, MaleMeasurementCreateType, MaleMeasurementType } from '@/types';
 import firestore from "@react-native-firebase/firestore";
@@ -16,8 +16,10 @@ import storage from '@react-native-firebase/storage';
 import { Ionicons } from '@expo/vector-icons';
 import { ButtonIcon } from '@gluestack-ui/themed';
 import QRCode from 'react-native-qrcode-svg';
-
-
+import * as FileSystem from "expo-file-system";
+import * as MediaLibrary from "expo-media-library";
+import * as Sharing from 'expo-sharing';
+import { Checkbox as ExpoCheckbox } from "expo-checkbox"
 
 
 
@@ -27,79 +29,116 @@ const AddWork = () => {
 
 
 
+    const navigation = useNavigation();
+
+
 
     const [work, setWork] = useState<any>({
         intakeDate: (new Date().toJSON().slice(0, 10)).toString(),
         collectionDate: (new Date().toJSON().slice(0, 10)).toString(),
         customerId: customerId,
-        names: names
+        names: names,
+        amountPaid: "0"
     })
     const [measurement, setMeasurement] = useState<any>(null)
     const [customer, setCustomer] = useState<CustomerType | any>(null)
     const [workId, setWorkId] = useState<any>(null)
 
-    const [isLoading, setIsLoading] = useState(true)
+    const [hasPermissions, setHasPermissions] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
 
 
 
     useEffect(() => {
-        firestore()
-            .collection("works")
-            .where("customerId", "==", customerId).get()
-            .then(querySnapshot => {
-                if (querySnapshot.size > 0) {
-                    setWork({ ...work, ...querySnapshot.docs[0].data() })
-                    setWorkId(querySnapshot.docs[0].id)
-                } else {
 
-                    return null
-                }
-            })
-            .catch(error => {
-                console.error("Error getting documents:", error);
-            });
+        (async () => { setHasPermissions((await MediaLibrary.requestPermissionsAsync()).granted) })()
 
-        firestore()
-            .collection("measurements")
-            .where("customerId", "==", customerId)
-            .get()
-            .then(querySnapshot => {
-                if (querySnapshot.size > 0) {
-                    setMeasurement(querySnapshot.docs[0].data())
-                    setWork({ ...work, measurementId: querySnapshot.docs[0].id })
-                } else {
 
-                    return null
-                }
-            })
-            .catch(error => {
-                console.error("Error getting documents:", error);
-            });
-        firestore()
-            .collection("customers")
-            .doc(customerId.toString())
-            .get()
-            .then(querySnapshot => {
-                if (querySnapshot) {
-                    setCustomer(querySnapshot.data())
+        const fetchData = async () => {
+            setIsLoading(true)
+            try {
+                await firestore()
+                    .collection("works")
+                    .where("customerId", "==", customerId).get()
+                    .then(querySnapshot => {
+                        if (querySnapshot.size > 0) {
+                            setWork({ ...work, ...querySnapshot.docs[0].data() })
+                            setWorkId(querySnapshot.docs[0].id)
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error getting documents:", error);
+                    });
 
-                } else {
+                await firestore()
+                    .collection("measurements")
+                    .where("customerId", "==", customerId)
+                    .get()
+                    .then(querySnapshot => {
+                        if (querySnapshot.size > 0) {
+                            setMeasurement({ ...querySnapshot.docs[0].data(), measurementId: querySnapshot.docs[0].id })
 
-                    return null
-                }
-            })
-            .catch(error => {
-                console.error("Error getting documents:", error);
-            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error getting documents:", error);
+                    });
+                await firestore()
+                    .collection("customers")
+                    .doc(customerId.toString())
+                    .get()
+                    .then(querySnapshot => {
+                        if (querySnapshot) {
+                            setCustomer(querySnapshot.data())
 
-        setIsLoading(false)
-    }, [])
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error getting documents:", error);
+                    });
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+            setIsLoading(false)
+        };
+
+        const unsubscribeDidFocus = navigation.addListener('focus', () => {
+            fetchData();
+        });
+
+        return unsubscribeDidFocus;
+
+    }, [navigation, customerId])
 
 
 
     const [isSaving, setIsSaving] = useState(false)
+    const [QRref, setQRref] = useState<any>();
+
+
+    const saveQRCode = () => {
+        if (!hasPermissions || !QRref) return
+
+        QRref?.toDataURL(async (data: any) => {
+            const QRCodeImg = FileSystem.documentDirectory + "QRCode.png";
+            await FileSystem.writeAsStringAsync(QRCodeImg, data, { encoding: FileSystem.EncodingType.Base64 })
+            MediaLibrary.saveToLibraryAsync(QRCodeImg)
+            // .then(() => Toast.show({
+            //     text1: "QR Code saved to gallery",
+            //     text1Style: { color: "green" },
+            //     type: "success"
+            // }))
+            // .catch(console.error)
+            await Sharing.shareAsync(QRCodeImg, {
+                dialogTitle: "Shar QR Code"
+            })
+        })
+    }
+
 
     const handleSave = async () => {
+        setWork({ ...work, measurementId: measurement?.measurementId })
         setIsSaving(true)
         if (workId) {
             try {
@@ -133,9 +172,6 @@ const AddWork = () => {
     }
 
 
-
-
-
     return (
         <SafeAreaView style={{ flex: 1, paddingHorizontal: 15 }}>
             {isLoading || !customer || !customerId ? <Center minHeight="$full">
@@ -145,14 +181,28 @@ const AddWork = () => {
                     <Tabs.Screen options={{ headerTitle: `Work - ${names}` }} />
                     <ScrollView showsVerticalScrollIndicator={false} overScrollMode='never'>
 
-                        <VStack space='4xl' mb={20}>
+                        <VStack space='4xl' my={20}>
                             <HStack space="xl">
                                 {workId && (
-                                    <QRCode
-                                        value={`workId=${workId},customerId=${customerId},names=${names}`}
-                                        logoBackgroundColor='transparent'
-                                        size={140}
-                                    />
+                                    <VStack alignItems='center' space='md'>
+
+                                        <QRCode
+                                            value={JSON.stringify({
+                                                workId,
+                                                customerId,
+                                                names
+                                            })}
+                                            logoBackgroundColor='transparent'
+                                            size={140}
+                                            getRef={setQRref}
+                                        />
+                                        <TouchableOpacity onPress={saveQRCode}>
+                                            <HStack alignItems='center' space='xs'>
+                                                <Ionicons name='share' color="green" size={20} />
+                                                <Text>Share</Text>
+                                            </HStack>
+                                        </TouchableOpacity>
+                                    </VStack>
                                 )}
                                 <VStack space="lg">
 
@@ -203,23 +253,15 @@ const AddWork = () => {
                                 </VStack>
 
                             </HStack>
-                            <HStack space="4xl">
-
-
-
-                                <Checkbox size="md" isInvalid={false} isDisabled={false} aria-label='Mark as Done' value={work?.done} onChange={value => setWork({ ...work, done: value })}>
-                                    <CheckboxIndicator mr="$2">
-                                        <CheckboxIcon as={CheckIcon} />
-                                    </CheckboxIndicator>
-                                    <CheckboxLabel>Mark as Done</CheckboxLabel>
-                                </Checkbox>
-                                <Checkbox size="md" isInvalid={false} isDisabled={false} aria-label='Collected' value={work?.collected} onChange={value => setWork({ ...work, collected: value })}>
-                                    <CheckboxIndicator mr="$2">
-                                        <CheckboxIcon as={CheckIcon} />
-                                    </CheckboxIndicator>
-                                    <CheckboxLabel>Collected</CheckboxLabel>
-                                </Checkbox>
-
+                            <HStack space="2xl">
+                                <HStack space="sm" alignItems='center'>
+                                    <ExpoCheckbox value={work?.done} onValueChange={value => setWork({ ...work, done: value })} />
+                                    <Text>Mark as Done</Text>
+                                </HStack>
+                                <HStack space="sm" alignItems='center'>
+                                    <ExpoCheckbox value={work?.collected} onValueChange={value => setWork({ ...work, collected: value })} />
+                                    <Text>Mark as Collected</Text>
+                                </HStack>
                             </HStack>
 
                             <VStack space="md">

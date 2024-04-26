@@ -20,28 +20,27 @@ import WorkListItem from "@/components/WorkListItem";
 
 export default function Works() {
 
-  const [data, setData] = useState<CustomerType[]>([]);
+  const [data, setData] = useState<any>([]);
   const collectionName = 'works';
 
 
-  const getData = async () => {
-    try {
-      const querySnapshot = await firestore().collection(collectionName).get();
-      const newData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-      // setData(newData);
-      setData(newData.sort((a, b) => (a.names || "").localeCompare(b.names || "")));
+  // const getData = async () => {
+  //   try {
+  //     const querySnapshot = await firestore().collection(collectionName).get();
+  //     const newData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+  //     // setData(newData);
+  //     setData(newData.sort((a, b) => (b?.intakeDate || "").localeCompare(a?.intakeDate || "")));
 
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
 
   useEffect(() => {
     const unsubscribe = firestore().collection(collectionName).onSnapshot(querySnapshot => {
       const newData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-      // setData(newData);
-      setData(newData.sort((a, b) => (a.names || "").localeCompare(b.names || "")));
-
+      setData(newData.sort((a: any, b: any) => (a?.names || "").localeCompare(b?.names || "")));
     }, error => {
       console.error(error);
     });

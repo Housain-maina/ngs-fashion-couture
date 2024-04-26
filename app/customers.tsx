@@ -19,27 +19,14 @@ import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
 
 export default function Customers() {
 
-  const [data, setData] = useState<CustomerType[]>([]);
+  const [data, setData] = useState<CustomerType[] | any>([]);
   const collectionName = 'customers';
 
-
-  const getData = async () => {
-    try {
-      const querySnapshot = await firestore().collection(collectionName).get();
-      const newData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-      // setData(newData);
-      setData(newData.sort((a, b) => (a.names || "").localeCompare(b.names || "")));
-
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   useEffect(() => {
     const unsubscribe = firestore().collection(collectionName).onSnapshot(querySnapshot => {
       const newData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-      // setData(newData);
-      setData(newData.sort((a, b) => (a.names || "").localeCompare(b.names || "")));
+      setData(newData.sort((a: any, b: any) => (a.names || "").localeCompare(b.names || "")));
 
     }, error => {
       console.error(error);
@@ -103,10 +90,6 @@ export default function Customers() {
 
   return (
     <SafeAreaView style={{ paddingHorizontal: 20, flex: 1 }}>
-
-      <Input>
-        <InputField placeholder="Search Customers...." />
-      </Input>
 
       <FlatList
         style={{ paddingVertical: 20 }}

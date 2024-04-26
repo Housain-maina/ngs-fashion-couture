@@ -23,7 +23,7 @@ function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
 }) {
-  return <FontAwesome size={22} style={{ marginBottom: -3 }} {...props} />;
+  return <FontAwesome size={22} {...props} />;
 }
 
 export {
@@ -71,10 +71,10 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null);
 
   // Handle user state changes
-  function onAuthStateChanged(user) {
+  function onAuthStateChanged(user: any) {
 
     setUser(user);
 
