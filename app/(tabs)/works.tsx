@@ -7,13 +7,15 @@ import { CustomerType } from "@/types";
 
 import { View } from "@gluestack-ui/themed";
 import CustomerListItem from "@/components/CustomerListItem";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, FlatList, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 import { createCustomer } from "@/utils/helpers";
 import Toast from "react-native-toast-message";
 import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
 import WorkListItem from "@/components/WorkListItem";
+import { useFocusEffect } from "expo-router";
+import client from "@/sanityClient";
 
 
 
@@ -21,34 +23,28 @@ import WorkListItem from "@/components/WorkListItem";
 export default function Works() {
 
   const [data, setData] = useState<any>([]);
-  const collectionName = 'works';
+
+  const fetchWorks = async () => {
+
+    const result = await client.fetch('*[_type == "work"] {..., customer -> {names, gender, phoneNumber, _id}} | order(_createdAt desc)');
+    setData(result)
+
+  }
 
 
-  // const getData = async () => {
-  //   try {
-  //     const querySnapshot = await firestore().collection(collectionName).get();
-  //     const newData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-  //     // setData(newData);
-  //     setData(newData.sort((a, b) => (b?.intakeDate || "").localeCompare(a?.intakeDate || "")));
+  useFocusEffect(
+    useCallback(() => {
 
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+      fetchWorks()
+
+      return () => { }
+    }, [])
+  );
 
 
-  useEffect(() => {
-    const unsubscribe = firestore().collection(collectionName).onSnapshot(querySnapshot => {
-      const newData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-      setData(newData.sort((a: any, b: any) => (a?.names || "").localeCompare(b?.names || "")));
-    }, error => {
-      console.error(error);
-    });
 
-    return () => unsubscribe(); // Cleanup function to unsubscribe when the component unmounts
-  }, [collectionName]);
 
-  const renderItem = ({ item }: { item: CustomerType }) => (
+  const renderItem = ({ item }: { item: any }) => (
     <WorkListItem data={item} />
 
   );
@@ -60,15 +56,14 @@ export default function Works() {
   return (
     <SafeAreaView style={{ paddingHorizontal: 20, flex: 1 }}>
 
-      <Input>
+      {/* <Input>
         <InputField placeholder="Search Works...." />
-      </Input>
+      </Input> */}
 
       <FlatList
-        style={{ paddingVertical: 20 }}
         data={data}
         renderItem={renderItem}
-        keyExtractor={customer => customer.id}
+        keyExtractor={customer => customer._id}
         ItemSeparatorComponent={() => <View style={{ height: 0.5, backgroundColor: "gray", margin: 6 }} />}
         ListFooterComponent={<View mb={100} />}
       />

@@ -2,11 +2,12 @@ import { Text, Center, Heading, Divider, ScrollView, Button, ButtonText, ButtonS
 import { SafeAreaView } from "react-native-safe-area-context";
 import { firebase } from "@react-native-firebase/auth"
 import auth from '@react-native-firebase/auth';
-import { useEffect, useState } from "react";
-import { Tabs } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
+import { Tabs, useFocusEffect } from "expo-router";
 import { TouchableOpacity } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import firestore from "@react-native-firebase/firestore"
+import client from "@/sanityClient";
 
 
 export default function Home() {
@@ -16,34 +17,35 @@ export default function Home() {
   const [outstandingPayment, setOutstandingPayment] = useState(0)
   const [nonCollectedWorks, setNonCollectedWorks] = useState(0)
 
-  useEffect(() => {
-    firestore().collection('works').where("done", "!=", true).get().then(querySnapshot => {
-      const totalDocs = querySnapshot.size;
-      setWorksCount(totalDocs)
-    });
+  const fetchCustomers = async () => {
 
-    firestore().collection('works').where("done", "==", true).where("collected", "!=", true).get().then(querySnapshot => {
-      const totalDocs = querySnapshot.size;
-      setNonCollectedWorks(totalDocs)
-    });
+    const result = await client.fetch('*[_type == "customer"]');
+    setCustomersCount(result.length)
 
-    firestore().collection('works').get().then(querySnapshot => {
-      querySnapshot.forEach(work => {
 
-        const data = work.data()
-        if (Number(data?.amountPaid) < Number(data?.price)) {
-          setOutstandingPayment(outstandingPayment + (Number(data?.price) - Number(data?.amountPaid)))
-        }
-      })
 
-    });
-    firestore().collection('customers').get().then(querySnapshot => {
-      const totalDocs = querySnapshot.size;
-      setCustomersCount(totalDocs)
-    });
+  }
 
-  }, [])
+  const fetchWorks = async () => {
 
+    await client.fetch('*[_type == "work"]').then(data => {
+      setWorksCount(data.filter((item: any) => item?.done !== "true").length)
+      setNonCollectedWorks(data.filter((item: any) => (item?.done === "true") && (item?.collected === false)).length)
+      setOutstandingPayment(data.filter((item: any) => item?.amountPaid < item?.price).reduce((acc: any, curr: any) => acc + (curr.price - (curr.amountPaid || 0)), 0))
+    })
+
+
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+
+      fetchCustomers()
+      fetchWorks()
+
+      return () => { }
+    }, [])
+  );
 
 
 
@@ -60,7 +62,7 @@ export default function Home() {
         <VStack space="xl">
           <Center bgColor="green" py="$8" borderRadius="$md">
             <VStack alignItems="center">
-              <Heading color="white">₦{outstandingPayment}</Heading>
+              <Heading color="white">CFA {outstandingPayment.toLocaleString()}</Heading>
               <Text color="white">Outstanding Payment</Text>
             </VStack>
           </Center>

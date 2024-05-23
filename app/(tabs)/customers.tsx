@@ -7,12 +7,14 @@ import { CustomerType } from "@/types";
 
 import { View } from "@gluestack-ui/themed";
 import CustomerListItem from "@/components/CustomerListItem";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, FlatList, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 import { createCustomer } from "@/utils/helpers";
 import Toast from "react-native-toast-message";
 import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
+import client from "@/sanityClient";
+import { useFocusEffect } from "expo-router";
 
 
 
@@ -20,20 +22,29 @@ import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
 export default function Customers() {
 
   const [data, setData] = useState<CustomerType[] | any>([]);
-  const collectionName = 'customers';
+  const [refetch, setRefetch] = useState<boolean>(false)
+  // const collectionName = 'customers';
+
+  const fetchCustomers = async () => {
+
+    const result = await client.fetch('*[_type == "customer"] | order(_createdAt desc)');
+    setData(result)
 
 
-  useEffect(() => {
-    const unsubscribe = firestore().collection(collectionName).onSnapshot(querySnapshot => {
-      const newData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-      setData(newData.sort((a: any, b: any) => (a.names || "").localeCompare(b.names || "")));
 
-    }, error => {
-      console.error(error);
-    });
+  }
 
-    return () => unsubscribe(); // Cleanup function to unsubscribe when the component unmounts
-  }, [collectionName]);
+
+  useFocusEffect(
+    useCallback(() => {
+
+      fetchCustomers()
+
+      return () => { }
+    }, [])
+  );
+
+
 
   const renderItem = ({ item }: { item: CustomerType }) => (
     <CustomerListItem data={item} />
@@ -68,6 +79,7 @@ export default function Customers() {
       type: "success",
       text1: "New Customer Saved!"
     })
+    fetchCustomers()
     return handleCreateModalClose()
   }
 
@@ -92,10 +104,10 @@ export default function Customers() {
     <SafeAreaView style={{ paddingHorizontal: 20, flex: 1 }}>
 
       <FlatList
-        style={{ paddingVertical: 20 }}
+        style={{ paddingVertical: 10 }}
         data={data}
         renderItem={renderItem}
-        keyExtractor={customer => customer.id}
+        keyExtractor={customer => customer._id}
         ItemSeparatorComponent={() => <View style={{ height: 0.5, backgroundColor: "gray", margin: 6 }} />}
         ListFooterComponent={<View mb={100} />}
       />

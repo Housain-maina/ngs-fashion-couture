@@ -14,7 +14,7 @@ import { Link, useRouter } from 'expo-router'
 
 
 
-const WorkListItem = ({ data }: { data: any }) => {
+const DetailWorkListItem = ({ data }: { data: any }) => {
     const router = useRouter()
 
 
@@ -29,10 +29,10 @@ const WorkListItem = ({ data }: { data: any }) => {
             >
 
                 <HStack alignItems="center" space='md'>
-                    <FontAwesome5 name="tshirt" color="gray" size={22} />
+
                     <View>
-                        <Heading size="sm" fontWeight="$normal">{data?.customer?.names}</Heading>
                         <Text size="xs">Done: {data?.done ? <Ionicons name='checkbox' color="green" /> : <Ionicons name='close' color="red" />} {" "} Collected: {data?.collected ? <Ionicons name='checkbox' color="green" /> : <Ionicons name='close' color="red" />} {" "} Paid: {data?.price === data?.amountPaid ? <Ionicons name='checkbox' color="green" /> : <Ionicons name='close' color="red" />}</Text>
+                        <Text size="md">{data?.intakeDate}   -   {data?.collectionDate}</Text>
                     </View>
 
                 </HStack>
@@ -43,4 +43,4 @@ const WorkListItem = ({ data }: { data: any }) => {
     )
 }
 
-export default WorkListItem
+export default DetailWorkListItem

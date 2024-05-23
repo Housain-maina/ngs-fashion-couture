@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Tabs, useLocalSearchParams } from 'expo-router';
+import { Tabs, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { Button, ButtonText, HStack, Input, InputField, VStack } from '@gluestack-ui/themed';
 import { Text } from '@gluestack-ui/themed';
 import { ActivityIndicator, ScrollView } from 'react-native';
@@ -8,39 +8,58 @@ import { getMeasurement } from '@/utils/helpers';
 import { FemaleMeasurementCreateType, FemaleMeasurementType, MaleMeasurementCreateType, MaleMeasurementType } from '@/types';
 import firestore from "@react-native-firebase/firestore";
 import Toast from 'react-native-toast-message';
+import client from '@/sanityClient';
 
 
 
 const AddMeasurement = () => {
-    const { names, gender, id: customerId } = useLocalSearchParams();
+    const { names, gender, _id: customerId } = useLocalSearchParams();
 
 
     const [maleState, setMaleState] = useState<any>({ customerId: customerId })
     const [femaleState, setFemaleState] = useState<any>({ customerId: customerId })
     const [measurementId, setMeasurementId] = useState<any>(null)
 
-    useEffect(() => {
-        const query = firestore()
-            .collection("measurements")
-            .where("customerId", "==", customerId);
+    // useEffect(() => {
+    //     const query = firestore()
+    //         .collection("measurements")
+    //         .where("customerId", "==", customerId);
 
-        query
-            .get()
-            .then(querySnapshot => {
-                if (querySnapshot.size > 0) {
-                    setMaleState({ ...maleState, ...querySnapshot.docs[0].data() })
-                    setFemaleState({ ...femaleState, ...querySnapshot.docs[0].data() })
-                    setMeasurementId(querySnapshot.docs[0].id)
-                } else {
+    //     query
+    //         .get()
+    //         .then(querySnapshot => {
+    //             if (querySnapshot.size > 0) {
+    //                 setMaleState({ ...maleState, ...querySnapshot.docs[0].data() })
+    //                 setFemaleState({ ...femaleState, ...querySnapshot.docs[0].data() })
+    //                 setMeasurementId(querySnapshot.docs[0].id)
+    //             } else {
 
-                    return null
-                }
-            })
-            .catch(error => {
-                console.error("Error getting documents:", error);
-            });
+    //                 return null
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.error("Error getting documents:", error);
+    //         });
 
-    }, [])
+    // }, [])
+
+    // const getMeasurement = async () => {
+
+    //     const measurement = await client.getDocument(customerId.toString()).then(data => {
+    //         console.log(data)
+    //     })
+    // }
+
+
+    useFocusEffect(
+        useCallback(() => {
+
+
+
+
+            return () => { }
+        }, [])
+    );
 
     const [isSaving, setIsSaving] = useState(false)
 

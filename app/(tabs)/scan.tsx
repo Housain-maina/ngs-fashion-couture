@@ -4,6 +4,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Camera } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs, useNavigation, useRouter } from 'expo-router';
+import client from '@/sanityClient';
 
 const Scan = () => {
     const [hasPermission, setHasPermission] = useState<any>(null);
@@ -25,20 +26,29 @@ const Scan = () => {
 
     }, [navigation]);
 
-    const handleBarCodeScanned = ({ type, data }: { type: any, data: any }) => {
+
+
+
+    const handleBarCodeScanned = async ({ type, data }: { type: any, data: any }) => {
         setScanned(true);
         const parsedData = JSON.parse(data)
-        const requiredKeys = ["workId", "customerId", "names"]
+        const requiredKeys = ["workId"]
 
         const allKeysPresent = requiredKeys.every(key => parsedData.hasOwnProperty(key));
 
+
         if (allKeysPresent) {
 
+            const result = await client.fetch(`*[_type == "work" && _id == "${parsedData?.workId}"]{_id,price,amountPaid,collected,done,collectionDate,intakeDate, customer -> {names, gender, phoneNumber, _id}}`)
+
+            if (result.length < 1) {
+                return alert("Invalid QR Code")
+            }
+
+
             return router.navigate({
-                pathname: "/addWork", params: {
-                    id: parsedData?.customerId,
-                    names: parsedData?.names
-                }
+                pathname: `/works/${parsedData?.workId}`,
+                params: { customerId: result[0]?.customer?._id, customerNames: result[0]?.customer?.names, customerPhoneNumber: result[0]?.customer?.phoneNumber, customerGender: result[0]?.customer?.gender, ...result[0] }
             })
         } else {
             alert("Not a valid QR Code for this app.")
@@ -61,7 +71,7 @@ const Scan = () => {
     return (
         <View style={styles.container}>
             <Tabs.Screen options={{
-                title: "Scan a QR Code"
+                title: "Scan QR Code"
             }} />
 
             <View style={styles.cameraContainer}>

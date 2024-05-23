@@ -19,12 +19,6 @@ import { Slot, Stack } from "expo-router"
 import auth from '@react-native-firebase/auth';
 import Toast from "react-native-toast-message";
 
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
-  color: string;
-}) {
-  return <FontAwesome size={22} {...props} />;
-}
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -72,6 +66,7 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState<any>(null);
+  SplashScreen.preventAutoHideAsync()
 
   // Handle user state changes
   function onAuthStateChanged(user: any) {
@@ -90,119 +85,40 @@ function RootLayoutNav() {
 
 
 
-  if (!user?.email) {
-    return (
-      <GluestackUIProvider config={config}>
-        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-          <Stack
-            screenOptions={{
-              // Disable the static render of the header on web
-              // to prevent a hydration error in React Navigation v6.
-              headerShown: useClientOnlyValue(false, true),
-            }}
-          >
-            <Stack.Screen
-              name="login"
-              options={{
-                title: "Log In",
-                headerShown: false,
+  SplashScreen.hideAsync()
 
-              }}
-
-            />
-          </Stack>
-        </ThemeProvider>
-      </GluestackUIProvider>
-    )
-  }
-
-  return (
+  if (!user) return (
     <GluestackUIProvider config={config}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Tabs
+        <Stack
           screenOptions={{
             // Disable the static render of the header on web
             // to prevent a hydration error in React Navigation v6.
             headerShown: useClientOnlyValue(false, true),
-
-
           }}
         >
-          <Tabs.Screen
-            name="index"
-            options={{
-              title: "NGS Fashion Couture",
-              tabBarLabel: "Home",
-
-              tabBarIcon: ({ color }) => <Entypo name="home" size={22} color={color} />,
-            }}
-
-          />
-
-          <Tabs.Screen
-            name="works"
-            options={{
-              title: "Works",
-
-              tabBarIcon: ({ color }) => <FontAwesome5 name="tshirt" size={22} color={color} />,
-            }}
-          />
-          <Tabs.Screen
-            name="measurements"
-            options={{
-              title: "Measurements",
-
-              tabBarIcon: ({ color }) => <Entypo name="ruler" size={22} color={color} />,
-
-              href: null
-            }}
-          />
-
-          <Tabs.Screen
-            name="scan"
-            options={{
-              title: "Scan",
-              tabBarIcon: ({ color }) => <TabBarIcon name="camera" size={22} color={color} />,
-            }}
-          />
-          <Tabs.Screen
-            name="customers"
-            options={{
-              title: "Customers",
-              tabBarIcon: ({ color }) => <TabBarIcon name="users" size={22} color={color} />,
-            }}
-          />
-          <Tabs.Screen
+          <Stack.Screen
             name="login"
             options={{
-              headerShown: false,
               title: "Log In",
-              tabBarShowLabel: false,
-              tabBarIcon: ({ color }) => <FontAwesome5 name="tshirt" size={22} color={color} />,
-              href: null
-            }}
-          />
-
-          <Tabs.Screen
-            name="addMeasurement"
-            options={{
-              title: "Add Measurement",
-              tabBarIcon: ({ color }) => <FontAwesome5 name="tshirt" size={22} color={color} />,
-              href: null,
+              headerShown: false,
 
             }}
-          />
-          <Tabs.Screen
-            name="addWork"
-            options={{
-              title: "Add Measurement",
-              tabBarIcon: ({ color }) => <FontAwesome5 name="tshirt" size={22} color={color} />,
-              href: null,
 
-            }}
           />
+        </Stack>
+      </ThemeProvider>
+    </GluestackUIProvider>
+  )
 
-        </Tabs>
+
+  return (
+    <GluestackUIProvider config={config}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="[customerId]" options={{ headerShown: false }} />
+        </Stack>
         <Toast />
       </ThemeProvider>
     </GluestackUIProvider>

@@ -1,5 +1,5 @@
 export interface CustomerType {
-  id: string;
+  _id: string;
   names: string;
   gender: string;
   phoneNumber: string;
@@ -12,7 +12,7 @@ export interface CustomerUpdateType {
 }
 
 export interface MaleMeasurementType {
-  id: string;
+  _id: string;
   customer: string;
   S: number;
   H: number;
@@ -57,7 +57,7 @@ export interface MaleMeasurementUpdateType {
 }
 
 export interface FemaleMeasurementType {
-  id: string;
+  _id: string;
   customer: string;
   B: number;
   W: number;

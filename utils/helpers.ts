@@ -1,3 +1,4 @@
+import client from "@/sanityClient";
 import {
   CustomerType,
   CustomerUpdateType,
@@ -13,8 +14,10 @@ export const updateCustomer = async (
   updatedData: Partial<CustomerUpdateType>
 ) => {
   try {
-    const docRef = firestore().collection("customers").doc(customerId); // Replace with your collection name
-    await docRef.update(updatedData);
+    await client
+      .patch(customerId)
+      .set({ ...updatedData })
+      .commit();
   } catch (error) {
     console.error("Error updating customer:", error);
   }
@@ -22,8 +25,7 @@ export const updateCustomer = async (
 
 export const deleteCustomer = async (customerId: string) => {
   try {
-    const docRef = firestore().collection("customers").doc(customerId); // Replace with your collection name
-    await docRef.delete();
+    await client.delete(customerId);
   } catch (error) {
     console.error("Error deleting customer:", error);
   }
@@ -31,7 +33,12 @@ export const deleteCustomer = async (customerId: string) => {
 
 export const createCustomer = async (data: CustomerUpdateType) => {
   try {
-    await firestore().collection("customers").add(data);
+    await client.create({
+      _type: "customer",
+      names: data?.names,
+      gender: data?.gender,
+      phoneNumber: data?.phoneNumber,
+    });
   } catch (error) {
     console.error("Error creating customer:", error);
   }

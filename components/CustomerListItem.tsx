@@ -15,65 +15,72 @@ import { Link, useRouter } from 'expo-router'
 
 
 const CustomerListItem = ({ data }: { data: CustomerType }) => {
-    const [isModalVisible, setModalVisible] = useState(false);
+    // const [isModalVisible, setModalVisible] = useState(false);
     // const [selectedCustomer, setSelectedCustomer] = useState<CustomerType | null>(null)
-    const [names, setNames] = useState(data?.names)
-    const [gender, setGender] = useState(data?.gender)
-    const [phoneNumber, setPhoneNumber] = useState(data?.phoneNumber)
-    const [isSaving, setIsSaving] = useState(false)
-    const [isDeletingCustomer, setIsDeletingCustomer] = useState(false)
-    const router = useRouter()
+    // const [names, setNames] = useState(data?.names)
+    // const [gender, setGender] = useState(data?.gender)
+    // const [phoneNumber, setPhoneNumber] = useState(data?.phoneNumber)
+    // const [isSaving, setIsSaving] = useState(false)
+    // const [isDeletingCustomer, setIsDeletingCustomer] = useState(false)
+    // const router = useRouter()
 
 
-    const handleModalClose = () => {
-        return setModalVisible(!isModalVisible)
-    }
+    // const handleModalClose = () => {
+    //     return setModalVisible(!isModalVisible)
+    // }
 
 
-    const handleCustomerSave = async () => {
-        setIsSaving(true)
-        const updates = { names, gender, phoneNumber };
-        await updateCustomer(data?.id, updates)
-        setIsSaving(false)
-        Toast.show({
-            type: "success",
-            text1: "Customer Saved!"
-        })
-        return handleModalClose()
-    }
+    // const handleCustomerSave = async () => {
+    //     setIsSaving(true)
+    //     const updates = { names, gender, phoneNumber };
+    //     await updateCustomer(data?._id, updates)
+    //     setIsSaving(false)
+    //     Toast.show({
+    //         type: "success",
+    //         text1: "Customer Saved!"
+    //     })
+    //     return handleModalClose()
+    // }
 
-    const handleCustomerDelete = async () => {
-        setIsDeletingCustomer(true)
+    // const handleCustomerDelete = async () => {
+    //     setIsDeletingCustomer(true)
 
-        await deleteCustomer(data?.id)
-        setIsDeletingCustomer(false)
-        Toast.show({
-            type: "success",
-            text1: "Customer Deleted!"
-        })
-        return handleModalClose()
-    }
+    //     await deleteCustomer(data?._id)
+    //     setIsDeletingCustomer(false)
+    //     Toast.show({
+    //         type: "success",
+    //         text1: "Customer Deleted!"
+    //     })
+    //     return handleModalClose()
+    // }
 
-    const genderButtons: RadioButtonProps[] = useMemo(() => ([
-        {
-            id: 'male',
-            label: 'Male',
-            value: 'male'
-        },
-        {
-            id: 'female',
-            label: 'Female',
-            value: 'female'
-        }
-    ]), []);
+    // const genderButtons: RadioButtonProps[] = useMemo(() => ([
+    //     {
+    //         id: 'male',
+    //         label: 'Male',
+    //         value: 'male'
+    //     },
+    //     {
+    //         id: 'female',
+    //         label: 'Female',
+    //         value: 'female'
+    //     }
+    // ]), []);
+    const { _id, ...rest } = data
 
 
     return (
         <>
-            <TouchableOpacity onPress={() => {
-                setModalVisible(!isModalVisible);
-                // setSelectedCustomer({ ...data })
-            }}>
+            <Link
+                href={{
+                    pathname: `/${_id}`,
+                    params: { ...rest },
+                }}
+            // onPress={() => {
+            // setModalVisible(!isModalVisible);
+            // setSelectedCustomer({ ...data })
+            // }}
+            >
 
                 <HStack alignItems="center" space='md'>
                     <Ionicons name="person-circle" size={40} color="gray" />
@@ -82,8 +89,8 @@ const CustomerListItem = ({ data }: { data: CustomerType }) => {
                         <Text size='xs'>{data.phoneNumber}</Text>
                     </VStack>
                 </HStack>
-            </TouchableOpacity>
-            <Modal isVisible={isModalVisible} backdropOpacity={0.8} onBackdropPress={handleModalClose}>
+            </Link>
+            {/* <Modal isVisible={isModalVisible} backdropOpacity={0.8} onBackdropPress={handleModalClose}>
                 <View style={{ backgroundColor: "white", padding: "10%", borderRadius: 10 }}>
                     <TouchableOpacity onPress={handleModalClose} style={{
                         position: "absolute",
@@ -147,7 +154,7 @@ const CustomerListItem = ({ data }: { data: CustomerType }) => {
                         </VStack>
                     </VStack>
                 </View>
-            </Modal >
+            </Modal > */}
 
         </>
     )
