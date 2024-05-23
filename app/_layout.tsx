@@ -87,7 +87,7 @@ function RootLayoutNav() {
 
   SplashScreen.hideAsync()
 
-  if (!user) return (
+  if (!user?.firstName) return (
     <GluestackUIProvider config={config}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack
