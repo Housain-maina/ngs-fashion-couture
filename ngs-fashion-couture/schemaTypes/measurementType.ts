@@ -56,42 +56,6 @@ export const measurementType = defineType({
       name: 'BBR',
       type: 'string',
     }),
-    // defineField({
-    //   name: 'B',
-    //   type: 'string',
-    // }),
-    // defineField({
-    //   name: 'W',
-    //   type: 'string',
-    // }),
-    // defineField({
-    //   name: 'L',
-    //   type: 'string',
-    // }),
-    // defineField({
-    //   name: 'HL',
-    //   type: 'string',
-    // }),
-    // defineField({
-    //   name: 'SH',
-    //   type: 'string',
-    // }),
-    // defineField({
-    //   name: 'UB',
-    //   type: 'string',
-    // }),
-    // defineField({
-    //   name: 'WL',
-    //   type: 'string',
-    // }),
-    // defineField({
-    //   name: 'HP',
-    //   type: 'string',
-    // }),
-    // defineField({
-    //   name: 'E',
-    //   type: 'string',
-    // }),
     defineField({
       name: 'Armhole',
       type: 'string',
