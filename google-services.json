@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "437115869277",
+    "project_id": "ngs-fashion-couture",
+    "storage_bucket": "ngs-fashion-couture.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437115869277:android:5c2127bea4cc6c29e0d5b4",
+        "android_client_info": {
+          "package_name": "com.hmaina.ngsfashioncouture"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAF9J0-eDptTP8CBoH-ibeDWsqobtu2zk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
