@@ -27,6 +27,7 @@
     "@react-native-firebase/storage": "^19.1.2",
     "@react-navigation/drawer": "^6.6.7",
     "@react-navigation/native": "^6.0.2",
+    "@reduxjs/toolkit": "^2.2.5",
     "@sanity/client": "^6.18.2",
     "expo": "~50.0.14",
     "expo-barcode-scanner": "~12.9.3",
@@ -61,6 +62,7 @@
     "react-native-svg": "^14.1.0",
     "react-native-toast-message": "^2.2.0",
     "react-native-web": "~0.19.6",
+    "react-redux": "^9.1.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {

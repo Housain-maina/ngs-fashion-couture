@@ -8,6 +8,8 @@ import { TouchableOpacity } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import firestore from "@react-native-firebase/firestore"
 import client from "@/sanityClient";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/slices/userSlice";
 
 
 export default function Home() {
@@ -30,12 +32,14 @@ export default function Home() {
 
     await client.fetch('*[_type == "work"]').then(data => {
       setWorksCount(data.filter((item: any) => item?.done !== "true").length)
-      setNonCollectedWorks(data.filter((item: any) => (item?.done === "true") && (item?.collected === false)).length)
+      setNonCollectedWorks(data.filter((item: any) => (item?.done === true) && (item?.collected === false)).length)
       setOutstandingPayment(data.filter((item: any) => item?.amountPaid < item?.price).reduce((acc: any, curr: any) => acc + (curr.price - (curr.amountPaid || 0)), 0))
     })
 
 
+
   }
+  console.log(worksCount, nonCollectedWorks, outstandingPayment)
 
   useFocusEffect(
     useCallback(() => {
@@ -47,12 +51,13 @@ export default function Home() {
     }, [])
   );
 
+  const disptach = useDispatch()
 
 
   return (
     <SafeAreaView style={{ flex: 1, paddingHorizontal: 15 }}>
       <Tabs.Screen options={{
-        headerRight: () => <TouchableOpacity onPress={() => auth().signOut()}><AntDesign name="logout" color="red" size={20} /></TouchableOpacity>,
+        headerRight: () => <TouchableOpacity onPress={() => auth().signOut().then(() => disptach(setUser(null)))}><AntDesign name="logout" color="red" size={20} /></TouchableOpacity>,
         headerRightContainerStyle: {
           paddingRight: 13
         }

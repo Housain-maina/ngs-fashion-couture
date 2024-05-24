@@ -59,44 +59,50 @@ export interface MaleMeasurementUpdateType {
 export interface FemaleMeasurementType {
   _id: string;
   customer: string;
-  B: number;
-  W: number;
-  L: number;
-  H: number;
-  N: number;
-  HL: number;
-  SH: number;
-  UB: number;
-  WL: number;
-  HP: number;
-  E: number;
+  Armhole: string;
+  Shoulder: string;
+  Bost: string;
+  UnderBost: string;
+  BostPoint: string;
+  HaveCut: string;
+  Neeple: string;
+  BlauseLength: string;
+  SkirtHips: string;
+  SkirtLength: string;
+  GwonLength: string;
+  SlipLength: string;
+  RoundSlip: string;
 }
 
 export interface FemaleMeasurementCreateType {
   customer: string;
-  B: number;
-  W: number;
-  L: number;
-  H: number;
-  N: number;
-  HL: number;
-  SH: number;
-  UB: number;
-  WL: number;
-  HP: number;
-  E: number;
+  Armhole: string;
+  Shoulder: string;
+  Bost: string;
+  UnderBost: string;
+  BostPoint: string;
+  HaveCut: string;
+  Neeple: string;
+  BlauseLength: string;
+  SkirtHips: string;
+  SkirtLength: string;
+  GwonLength: string;
+  SlipLength: string;
+  RoundSlip: string;
 }
 
 export interface FemaleMeasurementUpdateType {
-  B?: number;
-  W?: number;
-  L?: number;
-  H?: number;
-  N?: number;
-  HL?: number;
-  SH?: number;
-  UB?: number;
-  WL?: number;
-  HP?: number;
-  E?: number;
+  Armhole: string;
+  Shoulder: string;
+  Bost: string;
+  UnderBost: string;
+  BostPoint: string;
+  HaveCut: string;
+  Neeple: string;
+  BlauseLength: string;
+  SkirtHips: string;
+  SkirtLength: string;
+  GwonLength: string;
+  SlipLength: string;
+  RoundSlip: string;
 }

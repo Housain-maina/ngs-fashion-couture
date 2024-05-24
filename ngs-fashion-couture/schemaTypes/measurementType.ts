@@ -56,40 +56,92 @@ export const measurementType = defineType({
       name: 'BBR',
       type: 'string',
     }),
+    // defineField({
+    //   name: 'B',
+    //   type: 'string',
+    // }),
+    // defineField({
+    //   name: 'W',
+    //   type: 'string',
+    // }),
+    // defineField({
+    //   name: 'L',
+    //   type: 'string',
+    // }),
+    // defineField({
+    //   name: 'HL',
+    //   type: 'string',
+    // }),
+    // defineField({
+    //   name: 'SH',
+    //   type: 'string',
+    // }),
+    // defineField({
+    //   name: 'UB',
+    //   type: 'string',
+    // }),
+    // defineField({
+    //   name: 'WL',
+    //   type: 'string',
+    // }),
+    // defineField({
+    //   name: 'HP',
+    //   type: 'string',
+    // }),
+    // defineField({
+    //   name: 'E',
+    //   type: 'string',
+    // }),
     defineField({
-      name: 'B',
+      name: 'Armhole',
       type: 'string',
     }),
     defineField({
-      name: 'W',
+      name: 'Shoulder',
       type: 'string',
     }),
     defineField({
-      name: 'L',
+      name: 'Bost',
       type: 'string',
     }),
     defineField({
-      name: 'HL',
+      name: 'UnderBost',
       type: 'string',
     }),
     defineField({
-      name: 'SH',
+      name: 'BostPoint',
       type: 'string',
     }),
     defineField({
-      name: 'UB',
+      name: 'HaveCut',
       type: 'string',
     }),
     defineField({
-      name: 'WL',
+      name: 'Neeple',
       type: 'string',
     }),
     defineField({
-      name: 'HP',
+      name: 'BlauseLength',
       type: 'string',
     }),
     defineField({
-      name: 'E',
+      name: 'SkirtHips',
+      type: 'string',
+    }),
+    defineField({
+      name: 'SkirtLength',
+      type: 'string',
+    }),
+    defineField({
+      name: 'GwonLength',
+      type: 'string',
+    }),
+    defineField({
+      name: 'SlipLength',
+      type: 'string',
+    }),
+    defineField({
+      name: 'RoundSlip',
       type: 'string',
     }),
   ],

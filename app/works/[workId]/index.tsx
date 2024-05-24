@@ -30,6 +30,7 @@ const AddWork = () => {
 
 
 
+
     const navigation = useNavigation();
 
 
@@ -38,12 +39,13 @@ const AddWork = () => {
         intakeDate: intakeDate,
         collectionDate: collectionDate,
         amountPaid: amountPaid,
-        collected: collected,
-        done: done,
+        collected: collected === 'true' ? true : false,
+        done: done === 'true' ? true : false,
         price: price
     })
 
-    const [measurement, setMeasurement] = useState<any>(null)
+
+    const [measurement, setMeasurement] = useState<MaleMeasurementType | FemaleMeasurementType | any>(null)
 
     const [hasPermissions, setHasPermissions] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
@@ -150,15 +152,15 @@ const AddWork = () => {
                         <VStack space="lg">
 
                             <VStack>
-                                <Heading size="sm">Full Name</Heading>
+                                <Heading size="sm" fontWeight='$semibold'>Full Name</Heading>
                                 <Text style={{ textTransform: "capitalize" }}>{customerNames}</Text>
                             </VStack>
                             <VStack>
-                                <Heading size="sm">Gender</Heading>
+                                <Heading size="sm" fontWeight='$semibold'>Gender</Heading>
                                 <Text style={{ textTransform: "capitalize" }}>{customerGender}</Text>
                             </VStack>
                             <VStack>
-                                <Heading size="sm">Phone Number</Heading>
+                                <Heading size="sm" fontWeight='$semibold'>Phone Number</Heading>
                                 <Text style={{ textTransform: "capitalize" }}>{customerPhoneNumber}</Text>
                             </VStack>
                         </VStack>
@@ -166,13 +168,13 @@ const AddWork = () => {
 
                     <HStack space='lg'>
                         <VStack>
-                            <Heading size="sm">Price</Heading>
+                            <Heading size="sm" fontWeight='$semibold'>Price</Heading>
                             <Input width="$32">
                                 <InputField keyboardType='decimal-pad' value={work?.price} onChangeText={text => setWork({ ...work, price: text })} />
                             </Input>
                         </VStack>
                         <VStack>
-                            <Heading size="sm">Amount Paid</Heading>
+                            <Heading size="sm" fontWeight='$semibold'>Amount Paid</Heading>
                             <Input width="$32">
                                 <InputField keyboardType='decimal-pad' value={work?.amountPaid} onChangeText={text => setWork({ ...work, amountPaid: text })} />
                             </Input>
@@ -182,13 +184,13 @@ const AddWork = () => {
                     <HStack space="lg">
 
                         <VStack>
-                            <Heading size="sm">Intake Date</Heading>
+                            <Heading size="sm" fontWeight='$semibold'>Intake Date</Heading>
                             <Input width="$32">
                                 <InputField value={work?.intakeDate} onChangeText={text => setWork({ ...work, intakeDate: text })} />
                             </Input>
                         </VStack>
                         <VStack>
-                            <Heading size="sm">Collection Date</Heading>
+                            <Heading size="sm" fontWeight='$semibold'>Collection Date</Heading>
                             <Input width="$32">
                                 <InputField value={work?.collectionDate} onChangeText={text => setWork({ ...work, collectionDate: text })} />
 
@@ -198,11 +200,11 @@ const AddWork = () => {
                     </HStack>
                     <HStack space="2xl">
                         <HStack space="sm" alignItems='center'>
-                            <ExpoCheckbox value={work?.done} onValueChange={value => setWork({ ...work, done: value })} />
+                            <ExpoCheckbox value={Boolean(work?.done)} onValueChange={value => setWork({ ...work, done: value })} />
                             <Text>Mark as Done</Text>
                         </HStack>
                         <HStack space="sm" alignItems='center'>
-                            <ExpoCheckbox value={work?.collected} onValueChange={value => setWork({ ...work, collected: value })} />
+                            <ExpoCheckbox value={Boolean(work?.collected)} onValueChange={value => setWork({ ...work, collected: value })} />
                             <Text>Mark as Collected</Text>
                         </HStack>
                     </HStack>
@@ -217,50 +219,50 @@ const AddWork = () => {
                                     <>
                                         <HStack space="4xl">
                                             <VStack>
-                                                <Heading>S</Heading>
+                                                <Heading fontWeight='$medium' fontSize={16}>S</Heading>
                                                 <Text>{measurement?.S}</Text>
                                             </VStack>
                                             <VStack>
-                                                <Heading>H</Heading>
+                                                <Heading fontWeight='$medium' fontSize={16}>H</Heading>
                                                 <Text>{measurement?.H}</Text>
                                             </VStack>
                                             <VStack>
-                                                <Heading>N</Heading>
+                                                <Heading fontWeight='$medium' fontSize={16}>N</Heading>
                                                 <Text>{measurement?.N}</Text>
                                             </VStack>
                                             <VStack>
-                                                <Heading>SL</Heading>
+                                                <Heading fontWeight='$medium' fontSize={16}>SL</Heading>
                                                 <Text>{measurement?.SL}</Text>
                                             </VStack>
                                             <VStack>
-                                                <Heading>FR</Heading>
+                                                <Heading fontWeight='$medium' fontSize={16}>FR</Heading>
                                                 <Text>{measurement?.FR}</Text>
                                             </VStack>
                                             <VStack>
-                                                <Heading>TL</Heading>
+                                                <Heading fontWeight='$medium' fontSize={16}>TL</Heading>
                                                 <Text>{measurement?.TL}</Text>
                                             </VStack>
 
                                         </HStack>
                                         <HStack space="4xl">
                                             <VStack>
-                                                <Heading>Lap</Heading>
+                                                <Heading fontWeight='$medium' fontSize={16}>Lap</Heading>
                                                 <Text>{measurement?.Lap}</Text>
                                             </VStack>
                                             <VStack>
-                                                <Heading>FW</Heading>
+                                                <Heading fontWeight='$medium' fontSize={16}>FW</Heading>
                                                 <Text>{measurement?.FW}</Text>
                                             </VStack>
                                             <VStack>
-                                                <Heading>Links</Heading>
+                                                <Heading fontWeight='$medium' fontSize={16}>Links</Heading>
                                                 <Text>{measurement?.Links}</Text>
                                             </VStack>
                                             <VStack>
-                                                <Heading>HK</Heading>
+                                                <Heading fontWeight='$medium' fontSize={16}>HK</Heading>
                                                 <Text>{measurement?.HK}</Text>
                                             </VStack>
                                             <VStack>
-                                                <Heading>BBR</Heading>
+                                                <Heading fontWeight='$medium' fontSize={16}>BBR</Heading>
                                                 <Text>{measurement?.BBR}</Text>
                                             </VStack>
                                         </HStack>
@@ -269,52 +271,67 @@ const AddWork = () => {
                                     <>
                                         <HStack space="4xl">
                                             <VStack>
-                                                <Heading>B</Heading>
-                                                <Text>{measurement?.B}</Text>
+                                                <Heading fontWeight='$medium' fontSize={16}>Armhole</Heading>
+                                                <Text>{measurement?.Armhole}</Text>
                                             </VStack>
                                             <VStack>
-                                                <Heading>W</Heading>
-                                                <Text>{measurement?.W}</Text>
+                                                <Heading fontWeight='$medium' fontSize={16}>Shoulder</Heading>
+                                                <Text>{measurement?.Shoulder}</Text>
                                             </VStack>
                                             <VStack>
-                                                <Heading>L</Heading>
-                                                <Text>{measurement?.L}</Text>
+                                                <Heading fontWeight='$medium' fontSize={16}>Bost</Heading>
+                                                <Text>{measurement?.Bost}</Text>
+                                            </VStack>
+                                        </HStack>
+                                        <HStack space="4xl">
+                                            <VStack>
+                                                <Heading fontWeight='$medium' fontSize={16}>Under Bost</Heading>
+                                                <Text>{measurement?.UnderBost}</Text>
                                             </VStack>
                                             <VStack>
-                                                <Heading>H</Heading>
-                                                <Text>{measurement?.H}</Text>
+                                                <Heading fontWeight='$medium' fontSize={16}>Bost Point</Heading>
+                                                <Text>{measurement?.BostPoint}</Text>
                                             </VStack>
                                             <VStack>
-                                                <Heading>N</Heading>
-                                                <Text>{measurement?.N}</Text>
+                                                <Heading fontWeight='$medium' fontSize={16}>Have Cut</Heading>
+                                                <Text>{measurement?.HaveCut}</Text>
+                                            </VStack>
+                                        </HStack>
+                                        <HStack space="4xl">
+                                            <VStack>
+                                                <Heading fontWeight='$medium' fontSize={16}>Neeple</Heading>
+                                                <Text>{measurement?.Neeple}</Text>
                                             </VStack>
                                             <VStack>
-                                                <Heading>HL</Heading>
-                                                <Text>{measurement?.HL}</Text>
+                                                <Heading fontWeight='$medium' fontSize={16}>Blause Length</Heading>
+                                                <Text>{measurement?.BlauseLength}</Text>
+                                            </VStack>
+                                            <VStack>
+                                                <Heading fontWeight='$medium' fontSize={16}>Skirt Hips</Heading>
+                                                <Text>{measurement?.SkirtHips}</Text>
+                                            </VStack>
+                                        </HStack>
+                                        <HStack space="4xl">
+                                            <VStack>
+                                                <Heading fontWeight='$medium' fontSize={16}>Skirt Length</Heading>
+                                                <Text>{measurement?.SkirtLength}</Text>
+                                            </VStack>
+                                            <VStack>
+                                                <Heading fontWeight='$medium' fontSize={16}>Gwon Length</Heading>
+                                                <Text>{measurement?.GwonLength}</Text>
                                             </VStack>
 
                                         </HStack>
                                         <HStack space="4xl">
                                             <VStack>
-                                                <Heading>SH</Heading>
-                                                <Text>{measurement?.SH}</Text>
+                                                <Heading fontWeight='$medium' fontSize={16}>Slip Length</Heading>
+                                                <Text>{measurement?.SlipLength}</Text>
                                             </VStack>
                                             <VStack>
-                                                <Heading>UB</Heading>
-                                                <Text>{measurement?.UB}</Text>
+                                                <Heading fontWeight='$medium' fontSize={16}>Round Slip</Heading>
+                                                <Text>{measurement?.RoundSlip}</Text>
                                             </VStack>
-                                            <VStack>
-                                                <Heading>WL</Heading>
-                                                <Text>{measurement?.WL}</Text>
-                                            </VStack>
-                                            <VStack>
-                                                <Heading>HP</Heading>
-                                                <Text>{measurement?.HP}</Text>
-                                            </VStack>
-                                            <VStack>
-                                                <Heading>E</Heading>
-                                                <Text>{measurement?.E}</Text>
-                                            </VStack>
+
                                         </HStack>
                                     </>
                                 )}

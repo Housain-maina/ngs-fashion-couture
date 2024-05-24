@@ -6,6 +6,9 @@ import { Alert, Image } from "react-native";
 import { Box } from "@gluestack-ui/themed";
 import auth from '@react-native-firebase/auth';
 import { useState } from "react";
+import { Redirect } from "expo-router";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser, setUser } from "@/slices/userSlice";
 
 
 
@@ -15,6 +18,9 @@ export default function LogIn() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const disptach = useDispatch()
+
+  const user = useSelector(selectUser)
 
 
 
@@ -23,12 +29,17 @@ export default function LogIn() {
     await auth()
       .signInWithEmailAndPassword(email.toLowerCase(), password)
       .then((res) => {
+        if (res?.user?.email) {
+          // return <Redirect href="/(tabs)" />
+          disptach(setUser(res?.user))
+
+        }
 
       })
       .catch(error => {
 
         if (error.code === 'auth/invalid-credential') {
-          return setError("Invalid email or password")
+          return setError("Wrong Email or Password")
         }
         if (error.code === 'auth/too-many-requests') {
           return setError("Too many log in attempts. Try again later.")
@@ -44,6 +55,10 @@ export default function LogIn() {
     return regex.test(email);
   }
 
+
+
+  if (user?.email) return <Redirect href="/(tabs)/" />
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image source={require("../assets/images/man-cloth.jpg")} alt="attire" resizeMode="cover" style={{
@@ -53,27 +68,32 @@ export default function LogIn() {
       <Box style={{ paddingHorizontal: "8%", paddingVertical: "10%", position: "absolute", bottom: "0%", width: "100%", backgroundColor: "white" }}>
         <FormControl>
           <VStack space="lg" reversed={false}>
-            <Heading textAlign="center">NGS Fashion Couture</Heading>
+            {/* <Heading textAlign="center">NGS Fashion Couture</Heading> */}
+            <Center>
+              <Image
+                source={require("../assets/images/nakalale-logo.png")}
+                style={{
+                  width: 200,
+                  height: 40,
+                }}
+                resizeMode="contain"
+              />
+            </Center>
 
             <Input variant="outline" size="lg" isDisabled={false} isInvalid={false} isReadOnly={false} >
               <InputField
                 placeholder='Email Address'
                 value={email}
                 onChangeText={value => setEmail(value)}
-
               />
             </Input>
             <Box>
-
-
               <Input variant="outline" size="lg" isDisabled={false} isInvalid={false} isReadOnly={false} >
                 <InputField
                   type="password"
                   placeholder='Password'
                   value={password}
                   onChangeText={value => setPassword(value)}
-
-
                 />
               </Input>
 

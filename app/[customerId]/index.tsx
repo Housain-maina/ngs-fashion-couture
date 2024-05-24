@@ -104,17 +104,19 @@ const CustomerId = () => {
 
 
                     return setFemaleState({
-                        B: data[0]?.B,
-                        W: data[0]?.W,
-                        L: data[0]?.L,
-                        H: data[0]?.H,
-                        N: data[0]?.N,
-                        HL: data[0]?.HL,
-                        SH: data[0]?.SH,
-                        UB: data[0]?.UB,
-                        WL: data[0]?.WL,
-                        HP: data[0]?.HP,
-                        E: data[0]?.E,
+                        Armhole: data[0]?.Armhole,
+                        Shoulder: data[0]?.Shoulder,
+                        Bost: data[0]?.Bost,
+                        UnderBost: data[0]?.UnderBost,
+                        BostPoint: data[0]?.BostPoint,
+                        HaveCut: data[0]?.HaveCut,
+                        Neeple: data[0]?.Neeple,
+                        BlauseLength: data[0]?.BlauseLength,
+                        SkirtHips: data[0]?.SkirtHips,
+                        SkirtLength: data[0]?.SkirtLength,
+                        GwonLength: data[0]?.GwonLength,
+                        SlipLength: data[0]?.SlipLength,
+                        RoundSlip: data[0]?.RoundSlip,
                     })
                 }
             })
@@ -138,7 +140,7 @@ const CustomerId = () => {
                     .set(gender === "male" ? { ...maleState } : { ...femaleState })
                     .commit();
             } catch (error) {
-                console.error("Error updating measurement:", error);
+                return console.error("Error updating measurement:", error);
             }
         }
 
@@ -192,7 +194,7 @@ const CustomerId = () => {
                 _ref: customerId
             }
         })
-        fetchCustomerWorks()
+        await fetchCustomerWorks()
         setIsCreating(false)
         setCreateModalVisible(false)
     }
@@ -243,13 +245,13 @@ const CustomerId = () => {
                                     <VStack>
                                         <Text fontWeight="$bold" size="sm">Price</Text>
                                         <Input width="$32">
-                                            <InputField keyboardType='decimal-pad' value={price} onChangeText={setPrice} />
+                                            <InputField fontSize={14} keyboardType='decimal-pad' value={price} onChangeText={setPrice} />
                                         </Input>
                                     </VStack>
                                     <VStack>
                                         <Text fontWeight="$bold" size="sm">Amount Paid</Text>
                                         <Input width="$32">
-                                            <InputField keyboardType='decimal-pad' value={amountPaid} onChangeText={setAmountPaid} />
+                                            <InputField fontSize={14} keyboardType='decimal-pad' value={amountPaid} onChangeText={setAmountPaid} />
                                         </Input>
                                     </VStack>
 
@@ -331,152 +333,166 @@ const CustomerId = () => {
                                 <VStack space='4xl' mb={20}>
                                     <HStack space='lg'>
                                         <VStack>
-                                            <Text>S</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='S' value={maleState?.S} onChangeText={(value) => setMaleState({ ...maleState, "S": value })} />
+                                            <Text size='sm'>S</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='S' value={maleState?.S} onChangeText={(value) => setMaleState({ ...maleState, "S": value })} />
                                             </Input>
                                         </VStack>
                                         <VStack>
-                                            <Text>H</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='H' value={maleState?.H} onChangeText={(value) => setMaleState({ ...maleState, "H": value })} />
+                                            <Text size='sm'>H</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='H' value={maleState?.H} onChangeText={(value) => setMaleState({ ...maleState, "H": value })} />
                                             </Input>
                                         </VStack>
                                         <VStack>
-                                            <Text>N</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='N' value={maleState?.N} onChangeText={(value) => setMaleState({ ...maleState, "N": value })} />
+                                            <Text size='sm'>N</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='N' value={maleState?.N} onChangeText={(value) => setMaleState({ ...maleState, "N": value })} />
                                             </Input>
                                         </VStack>
                                         <VStack>
-                                            <Text>SL</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='SL' value={maleState?.SL} onChangeText={(value) => setMaleState({ ...maleState, "SL": value })} />
+                                            <Text size='sm'>SL</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='SL' value={maleState?.SL} onChangeText={(value) => setMaleState({ ...maleState, "SL": value })} />
                                             </Input>
                                         </VStack>
                                     </HStack>
                                     <HStack space='lg'>
                                         <VStack>
-                                            <Text>FR</Text>
-                                            <Input width="$16" >
-                                                <InputField keyboardType='decimal-pad' placeholder='FR' value={maleState?.FR} onChangeText={(value) => setMaleState({ ...maleState, "FR": value })} />
+                                            <Text size='sm'>FR</Text>
+                                            <Input width="$24" >
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='FR' value={maleState?.FR} onChangeText={(value) => setMaleState({ ...maleState, "FR": value })} />
                                             </Input>
                                         </VStack>
                                         <VStack>
-                                            <Text>TL</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='TL' value={maleState?.TL} onChangeText={(value) => setMaleState({ ...maleState, "TL": value })} />
+                                            <Text size='sm'>TL</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='TL' value={maleState?.TL} onChangeText={(value) => setMaleState({ ...maleState, "TL": value })} />
                                             </Input>
                                         </VStack>
                                         <VStack>
-                                            <Text>Lap</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='Lap' value={maleState?.Lap} onChangeText={(value) => setMaleState({ ...maleState, "Lap": value })} />
+                                            <Text size='sm'>Lap</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='Lap' value={maleState?.Lap} onChangeText={(value) => setMaleState({ ...maleState, "Lap": value })} />
                                             </Input>
                                         </VStack>
                                         <VStack>
-                                            <Text>FW</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='FW' value={maleState?.FW} onChangeText={(value) => setMaleState({ ...maleState, "FW": value })} />
+                                            <Text size='sm'>FW</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='FW' value={maleState?.FW} onChangeText={(value) => setMaleState({ ...maleState, "FW": value })} />
                                             </Input>
                                         </VStack>
                                     </HStack>
                                     <HStack space='lg'>
                                         <VStack>
-                                            <Text>Links</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='Links' value={maleState?.Links} onChangeText={(value) => setMaleState({ ...maleState, "Links": value })} />
+                                            <Text size='sm'>Links</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='Links' value={maleState?.Links} onChangeText={(value) => setMaleState({ ...maleState, "Links": value })} />
                                             </Input>
                                         </VStack>
                                         <VStack>
-                                            <Text>HK</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='HK' value={maleState?.HK} onChangeText={(value) => setMaleState({ ...maleState, "HK": value })} />
+                                            <Text size='sm'>HK</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='HK' value={maleState?.HK} onChangeText={(value) => setMaleState({ ...maleState, "HK": value })} />
                                             </Input>
                                         </VStack>
                                         <VStack>
-                                            <Text>BBR</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='BBR' value={maleState?.BBR} onChangeText={(value) => setMaleState({ ...maleState, "BBR": value })} />
+                                            <Text size='sm'>BBR</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='BBR' value={maleState?.BBR} onChangeText={(value) => setMaleState({ ...maleState, "BBR": value })} />
                                             </Input>
                                         </VStack>
-
                                     </HStack>
                                 </VStack>
                             ) : (
                                 <VStack space='4xl' mb={20}>
                                     <HStack space='lg'>
                                         <VStack>
-                                            <Text>B</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='B' value={femaleState?.B} onChangeText={(value) => setFemaleState({ ...femaleState, "B": value })} />
+                                            <Text size='sm'>Armhole</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='Armhole' value={femaleState?.Armhole} onChangeText={(value) => setFemaleState({ ...femaleState, "Armhole": value })} />
                                             </Input>
                                         </VStack>
                                         <VStack>
-                                            <Text>W</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='W' value={femaleState?.W} onChangeText={(value) => setFemaleState({ ...femaleState, "W": value })} />
+                                            <Text size='sm'>Shoulder</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='Shoulder' value={femaleState?.Shoulder} onChangeText={(value) => setFemaleState({ ...femaleState, "Shoulder": value })} />
                                             </Input>
                                         </VStack>
                                         <VStack>
-                                            <Text>L</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='L' value={femaleState?.L} onChangeText={(value) => setFemaleState({ ...femaleState, "L": value })} />
-                                            </Input>
-                                        </VStack>
-                                        <VStack>
-                                            <Text>H</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='H' value={femaleState?.H} onChangeText={(value) => setFemaleState({ ...femaleState, "H": value })} />
+                                            <Text size='sm'>Bost</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='Bost' value={femaleState?.Bost} onChangeText={(value) => setFemaleState({ ...femaleState, "Bost": value })} />
                                             </Input>
                                         </VStack>
                                     </HStack>
                                     <HStack space='lg'>
                                         <VStack>
-                                            <Text>N</Text>
-                                            <Input width="$16" >
-                                                <InputField keyboardType='decimal-pad' placeholder='N' value={femaleState?.N} onChangeText={(value) => setFemaleState({ ...femaleState, "N": value })} />
+                                            <Text size='sm'>Under Bost</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='Under Bost' value={femaleState?.UnderBost} onChangeText={(value) => setFemaleState({ ...femaleState, "UnderBost": value })} />
                                             </Input>
                                         </VStack>
                                         <VStack>
-                                            <Text>HL</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='HL' value={femaleState?.HL} onChangeText={(value) => setFemaleState({ ...femaleState, "HL": value })} />
+                                            <Text size='sm'>Bost Point</Text>
+                                            <Input width="$24" >
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='Bost Point' value={femaleState?.BostPoint} onChangeText={(value) => setFemaleState({ ...femaleState, "BostPoint": value })} />
                                             </Input>
                                         </VStack>
                                         <VStack>
-                                            <Text>SH</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='SH' value={femaleState?.SH} onChangeText={(value) => setFemaleState({ ...femaleState, "SH": value })} />
-                                            </Input>
-                                        </VStack>
-                                        <VStack>
-                                            <Text>UB</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='UB' value={femaleState?.UB} onChangeText={(value) => setFemaleState({ ...femaleState, "UB": value })} />
+                                            <Text size='sm'>Have Cut</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='Have Cut' value={femaleState?.HaveCut} onChangeText={(value) => setFemaleState({ ...femaleState, "HaveCut": value })} />
                                             </Input>
                                         </VStack>
                                     </HStack>
                                     <HStack space='lg'>
                                         <VStack>
-                                            <Text>WL</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='WL' value={femaleState?.WL} onChangeText={(value) => setFemaleState({ ...femaleState, "WL": value })} />
+                                            <Text size='sm'>Neeple</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='Neeple' value={femaleState?.Neeple} onChangeText={(value) => setFemaleState({ ...femaleState, "Neeple": value })} />
                                             </Input>
                                         </VStack>
                                         <VStack>
-                                            <Text>HP</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='HP' value={femaleState?.HP} onChangeText={(value) => setFemaleState({ ...femaleState, "HP": value })} />
+                                            <Text size='sm'>Blause Length</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='Blause Length' value={femaleState?.BlauseLength} onChangeText={(value) => setFemaleState({ ...femaleState, "BlauseLength": value })} />
                                             </Input>
                                         </VStack>
                                         <VStack>
-                                            <Text>E</Text>
-                                            <Input width="$16">
-                                                <InputField keyboardType='decimal-pad' placeholder='E' value={femaleState?.E} onChangeText={(value) => setFemaleState({ ...femaleState, "E": value })} />
+                                            <Text size='sm'>Skirt Hips</Text>
+                                            <Input width="$24">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='Skirt Hips' value={femaleState?.SkirtHips} onChangeText={(value) => setFemaleState({ ...femaleState, "SkirtHips": value })} />
                                             </Input>
                                         </VStack>
-
+                                    </HStack>
+                                    <HStack space='lg'>
+                                        <VStack>
+                                            <Text size='sm'>Skirt Length</Text>
+                                            <Input width="$32">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='Skirt Length' value={femaleState?.SkirtLength} onChangeText={(value) => setFemaleState({ ...femaleState, "SkirtLength": value })} />
+                                            </Input>
+                                        </VStack>
+                                        <VStack>
+                                            <Text size='sm'>Gwon Length</Text>
+                                            <Input width="$32">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='Gwon Length' value={femaleState?.GwonLength} onChangeText={(value) => setFemaleState({ ...femaleState, "GwonLength": value })} />
+                                            </Input>
+                                        </VStack>
+                                    </HStack>
+                                    <HStack space='lg'>
+                                        <VStack>
+                                            <Text size='sm'>Slip Length</Text>
+                                            <Input width="$32">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='Slip Length' value={femaleState?.SlipLength} onChangeText={(value) => setFemaleState({ ...femaleState, "SlipLength": value })} />
+                                            </Input>
+                                        </VStack>
+                                        <VStack>
+                                            <Text size='sm'>Round Slip</Text>
+                                            <Input width="$32">
+                                                <InputField fontSize={14} keyboardType='decimal-pad' placeholder='Round Slip' value={femaleState?.RoundSlip} onChangeText={(value) => setFemaleState({ ...femaleState, "RoundSlip": value })} />
+                                            </Input>
+                                        </VStack>
                                     </HStack>
                                 </VStack>
                             )}

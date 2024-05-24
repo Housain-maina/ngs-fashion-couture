@@ -6,18 +6,21 @@ import {
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { GluestackUIProvider } from "@gluestack-ui/themed";
 import { config } from "@gluestack-ui/config";
 import { useColorScheme } from "@/components/useColorScheme";
 import React from "react";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Entypo from "@expo/vector-icons/Entypo"
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { Slot, Stack } from "expo-router"
 import auth from '@react-native-firebase/auth';
 import Toast from "react-native-toast-message";
+import { store } from "@/store";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { selectUser, setUser } from "@/slices/userSlice";
 
 
 export {
@@ -59,19 +62,28 @@ export default function RootLayout() {
   //   return null;
   // }
 
-  return <RootLayoutNav />;
+  return (
+    <Provider store={store}>
+      <RootLayoutNav />
+    </Provider>
+
+  )
 }
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  // const [user, setUser] = useState<any>(null);
+  const user = useSelector(selectUser)
+  const disptach = useDispatch()
+
   SplashScreen.preventAutoHideAsync()
 
   // Handle user state changes
   function onAuthStateChanged(user: any) {
 
-    setUser(user);
+    disptach(setUser(user))
+
 
     if (initializing) setInitializing(false);
   }
@@ -87,35 +99,44 @@ function RootLayoutNav() {
 
   SplashScreen.hideAsync()
 
-  if (!user?.firstName) return (
-    <GluestackUIProvider config={config}>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack
-          screenOptions={{
-            // Disable the static render of the header on web
-            // to prevent a hydration error in React Navigation v6.
-            headerShown: useClientOnlyValue(false, true),
-          }}
-        >
-          <Stack.Screen
-            name="login"
-            options={{
-              title: "Log In",
-              headerShown: false,
+  // if (!user?.email) return (
+  //   <GluestackUIProvider config={config}>
+  //     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+  //       <Stack
+  //         screenOptions={{
+  //           // Disable the static render of the header on web
+  //           // to prevent a hydration error in React Navigation v6.
+  //           // headerShown: useClientOnlyValue(false, true),
 
-            }}
+  //         }}
+  //         initialRouteName="login"
+  //       >
+  //         <Stack.Screen
+  //           name="login"
+  //           options={{
+  //             title: "Log In",
+  //             headerShown: false,
+  //           }}
+  //         />
 
-          />
-        </Stack>
-      </ThemeProvider>
-    </GluestackUIProvider>
-  )
+  //       </Stack>
+  //     </ThemeProvider>
+  //   </GluestackUIProvider>
+  // )
+  // if (!user?.email) return (<Redirect href="/login" />)
 
 
   return (
     <GluestackUIProvider config={config}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
+        <Stack initialRouteName="login">
+          <Stack.Screen
+            name="login"
+            options={{
+              title: "Log In",
+              headerShown: false,
+            }}
+          />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="[customerId]" options={{ headerShown: false }} />
         </Stack>

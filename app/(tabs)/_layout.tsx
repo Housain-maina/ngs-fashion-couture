@@ -13,11 +13,13 @@ import { useColorScheme } from "@/components/useColorScheme";
 import React from "react";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Entypo from "@expo/vector-icons/Entypo"
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { Slot, Stack } from "expo-router"
 import auth from '@react-native-firebase/auth';
 import Toast from "react-native-toast-message";
+import { useSelector } from "react-redux";
+import { selectUser } from "@/slices/userSlice";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
@@ -28,6 +30,9 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const user = useSelector(selectUser)
+
+  if (!user?.email) return <Redirect href="/login" />
 
   return (
     <GluestackUIProvider config={config}>
