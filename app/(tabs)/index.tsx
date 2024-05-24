@@ -39,7 +39,7 @@ export default function Home() {
 
 
   }
-  console.log(worksCount, nonCollectedWorks, outstandingPayment)
+
 
   useFocusEffect(
     useCallback(() => {
