@@ -49,7 +49,7 @@ export default function TabLayout() {
           <Tabs.Screen
             name="index"
             options={{
-              title: "NGS Fashion Couture",
+              title: "Tailoring Shop (FCP/CSC/19/1046)",
               tabBarLabel: "Home",
 
               tabBarIcon: ({ color }) => <Entypo name="home" size={22} color={color} />,

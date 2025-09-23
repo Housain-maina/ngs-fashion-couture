@@ -67,7 +67,7 @@ export default function Home() {
         <VStack space="xl">
           <Center bgColor="green" py="$8" borderRadius="$md">
             <VStack alignItems="center">
-              <Heading color="white">CFA {outstandingPayment.toLocaleString()}</Heading>
+              <Heading color="white">₦ {outstandingPayment.toLocaleString()}</Heading>
               <Text color="white">Outstanding Payment</Text>
             </VStack>
           </Center>

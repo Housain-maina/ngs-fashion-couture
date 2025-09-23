@@ -68,8 +68,9 @@ export default function LogIn() {
       <Box style={{ paddingHorizontal: "8%", paddingVertical: "10%", position: "absolute", bottom: "0%", width: "100%", backgroundColor: "white" }}>
         <FormControl>
           <VStack space="lg" reversed={false}>
-            {/* <Heading textAlign="center">NGS Fashion Couture</Heading> */}
-            <Center>
+            <Heading textAlign="center">Tailoring Shop Inventory System</Heading>
+            <Heading textAlign="center">by Abdulazeez Inuwa Musa (FCP/CSC/19/1046)</Heading>
+            {/* <Center>
               <Image
                 source={require("../assets/images/nakalale-logo.png")}
                 style={{
@@ -78,7 +79,7 @@ export default function LogIn() {
                 }}
                 resizeMode="contain"
               />
-            </Center>
+            </Center> */}
 
             <Input variant="outline" size="lg" isDisabled={false} isInvalid={false} isReadOnly={false} >
               <InputField
